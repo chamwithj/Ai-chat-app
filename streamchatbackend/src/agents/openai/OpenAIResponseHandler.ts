@@ -96,9 +96,11 @@ export class OpenAIResponseHandler{
 
         if (toolOutputs.length > 0 && this.openAiThread && this.run_id) {
           currentStream = this.openai.beta.threads.runs.submitToolOutputsStream(
-            this.openAiThread.id,
-            this.run_id,String,
-            { tool_outputs: toolOutputs }
+            this.run_id,
+              { 
+                thread_id: this.openAiThread.id, 
+                tool_outputs: toolOutputs 
+              }
           );
           toolOutputs = [];
         }
@@ -129,7 +131,7 @@ export class OpenAIResponseHandler{
 
   console.log("Stop generating for message", this.message.id);
 
-  if (!this.openai || !this.openAiThread || !this.run_id) { // ✅ fix 1
+  if (!this.openai || !this.openAiThread || !this.run_id) { 
     return;
   }
 
